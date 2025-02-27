@@ -1,0 +1,28 @@
+O código Python abaixo implementa um sistema de autenticação seguro com SALT e bcrypt para hashing de senhas em um banco de dados MySQL.  
+ - Resumo das funcionalidades:
+
+1. Conexão com o Banco de Dados  
+  - A função `connect_db()` estabelece uma conexão com um banco de dados MySQL chamado `users_db`.
+
+2. Registro de Usuários  
+  - A função `register_user(username, password)`:
+    - Gera um SALT único para cada usuário.  
+    - Criptografa a senha com bcrypt (`bcrypt.hashpw(password, salt)`).  
+    - Insere os dados na tabela `users`, garantindo que o nome de usuário seja único.
+
+3. Login Seguro  
+  - A verificação de senha compara a senha inserida com o hash armazenado usando `bcrypt.checkpw(password, stored_hash)`.  
+  - Se a senha for correta, o usuário é autenticado; caso contrário, exibe um erro.
+
+4. Ataque de Dicionário (Simulação)  
+  - A função `dictionary_attack(username, wordlist)` tenta quebrar senhas testando palavras comuns de uma lista (`wordlist`).  
+  - Para cada palavra, verifica se corresponde ao hash armazenado (`bcrypt.checkpw(word.encode(), hashed_password.encode())`).
+
+5. Execução do Código  
+  - O script solicita um nome de usuário e uma senha para registrar um novo usuário.  
+  - Depois, simula um ataque de dicionário testando algumas senhas comuns.
+
+ Melhorias e ajustes necessários:
+- O trecho `if bcrypt.checkpw(user_teste.encode(), stored_hash):` está incorreto porque `stored_hash` não foi previamente definido.  
+- O hash de senha armazenado no banco já está codificado em bytes, então não é necessário chamar `.encode()` novamente.  
+- O código pode ser melhor estruturado, separando a lógica de autenticação e segurança.
